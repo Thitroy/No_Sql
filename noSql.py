@@ -5,15 +5,15 @@ from bson import ObjectId
 import sys
 
 
-uri = "mongodb+srv://thitroy:splinth785@nosql.nydb0ro.mongodb.net/?retryWrites=true&w=majority&appName=noSql"
+uri = "mongodb+srv://user:wA7i8wbcSDd9bfMC@nosql.nydb0ro.mongodb.net/?retryWrites=true&w=majority&appName=noSql"
 
-# Create a new client and connect to the server
+# Creación de un nuevo cliente y conexión a la base de datos
 client = MongoClient(uri)
 
-# Send a ping to confirm a successful connection
+# Envío de un mensaje para comfirmar la conexión
 try:
     client.admin.command('ping')
-    print("Pinged your deployment. You successfully connected to MongoDB!")
+    print("Se generó la conexión de manera existosa.")
 except Exception as e:
     print(e)
 
@@ -59,16 +59,16 @@ def updatePets():
     query = {"_id": ObjectId(id)}
     pet = collection.find_one(query)
     if not pet:
-        print("No se encontró la mascota con el id proporcionado")
+        print("No se encontró la mascota con el id proporcionado.")
         return
 
     nombre = input("Ingrese el  nombre de la mascota ")
     nuevo_tipo = input("Ingrese el tipo de mascota: ")
     nuevo_dueño = input("Ingrese el dueño de la mascota: ")
-    new_data = { "Nombre": nombre, "Tipo": nuevo_tipo, "Dueño":nuevo_dueño}
-    collection.update_one(query, {"$set": new_data})
+    nueva_data = { "Nombre": nombre, "Tipo": nuevo_tipo, "Dueño":nuevo_dueño}
+    collection.update_one(query, {"$set": nueva_data})
     print(" actualización exitosa.")
-    pprint.pprint(new_data)
+    pprint.pprint(nueva_data)
 
 
  # Eliminar los datos
@@ -117,6 +117,11 @@ def menu():
             selected_option()
         else:
             print("Opción no válida. Por favor, ingrese un número válido.")
+
+
+if __name__ == "__main__":
+ menu()
+
 
 
 if __name__ == "__main__":
