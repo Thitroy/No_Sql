@@ -1,8 +1,10 @@
 # CRUD de mascotas
-Programa que realiza  un CRUD de mascota, donde se puede crear, listar, buscar por id, actualizar y eliminar datos de mascotas usando lenguaje python para su compilación.
+Programa para el sistema Linux/ubuntu que realiza  un CRUD de mascota, donde se puede crear, listar, buscar por id, actualizar y eliminar datos de mascotas usando lenguaje python para su compilación y MongoDB para la base de datos.
 
 ## Descripción: 
-Al momento de ejecutar el programa, se establece la conexión a la base de datos para que permita manipularla dentro de la terminal. Si se conecta de manera adecuada, se enviará un mensaje de comfirmación y procederá com un menú de opciones para que el usuario decida la interacción qwe desea realizar. Dependiendo de su elección, se mostrará la función correspondiente.
+Al momento de ejecutar el programa, se establece la conexión a la base de datos para que permita manipularla dentro de la terminal. Si se conecta de manera adecuada, se enviará un mensaje de comfirmación y procederá com un menú de opciones para que el usuario decida la interacción que desea realizar. Dependiendo de su elección, se mostrará la función correspondiente.
+
+Dentro de los atributos de Mascota se encuentran el id, el nombre, el tipo y el dueño de la mascota.
 
 ## Ejecución:
 Para realizar la ejecución del programa, utilize el siguiente comando :
