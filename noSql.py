@@ -62,7 +62,7 @@ def updatePets():
         print("No se encontró la mascota con el id proporcionado.")
         return
 
-    nombre = input("Ingrese el  nombre de la mascota ")
+    nombre = input("Ingrese el nombre de la mascota: ")
     nuevo_tipo = input("Ingrese el tipo de mascota: ")
     nuevo_dueño = input("Ingrese el dueño de la mascota: ")
     nueva_data = { "Nombre": nombre, "Tipo": nuevo_tipo, "Dueño":nuevo_dueño}
