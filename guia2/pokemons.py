@@ -1,3 +1,4 @@
+import json
 import pokebase as pb
 
 # Obtener las versiones de juego que incluyen la región de Kanto
@@ -21,3 +22,18 @@ kanto_pokemon_names = [entry.pokemon_species.name for entry in kanto_dex.pokemon
 print("Nombres de Pokémon dentro de la región de Kanto:")
 for name in kanto_pokemon_names:
     print("- " + name)
+
+# Transformar la información a formato JSON
+kanto_json_data = {
+    "region": "Kanto",
+    "versiones_de_juego": [version.name for version in kanto_versions],
+    "pokemon_nombres": kanto_pokemon_names
+}
+
+# Guardar la información en un archivo JSON
+with open('data.json', 'w') as json_file:
+    json.dump(kanto_json_data, json_file)
+
+# Mostrar la información en la terminal
+print("Información guardada en formato JSON:")
+print(json.dumps(kanto_json_data, indent=4))  # Imprimir el JSON con formato indentado
