@@ -1,55 +1,102 @@
 // Cargar los datos
+document.addEventListener("DOMContentLoaded", function() {
 d3.json("../data.json").then(function(data) {
+    console.log(data);
 
-    // Crear un objeto de recuento de Pokémon por versión de juego
-    var pokemonCounts = {};
-    
-    // Inicializar el contador para cada versión de juego
-    data.versiones_de_juego.forEach(function(version) {
-        pokemonCounts[version] = 0;
-    });
+    // Filtrar los datos para obtener solo los de Kanto y Johto
+    var kantoData = data.regiones.find(region => region.nombre === "Kanto");
+    var johtoData = data.regiones.find(region => region.nombre === "Johto");
 
-    // Contar los Pokémon por versión de juego
-    data.pokemon_nombres.forEach(function(pokemonName) {
-        // Incrementar el contador para cada versión en la que aparece el Pokémon
-        data.versiones_de_juego.forEach(function(version) {
-            if (data.versiones_de_juego.includes(version)) {
-                pokemonCounts[version]++;
-            }
-        });
-    });
+    // Obtener la cantidad de juegos que incluyen cada región
+    var kantoGamesCount = kantoData.juegos_donde_se_incluye.length;
+    var johtoGamesCount = johtoData.juegos_donde_se_incluye.length;
 
-    // Convertir el objeto en un array de objetos {version: ..., count: ...}
-    var pieData = Object.keys(pokemonCounts).map(function(version) {
-        return { version: version, count: pokemonCounts[version] };
-    });
+    console.log(kantoGamesCount);
+    console.log(johtoGamesCount);
 
-    // Crear el generador de arcos para el gráfico de pastel
-    var arcGenerator = d3.arc()
+    // Crear los datos para el gráfico de barras de juegos
+    var gamesBarData = [
+        { region: "Kanto", count: kantoGamesCount },
+        { region: "Johto", count: johtoGamesCount }
+    ];
+
+    // Crear el generador de barra para juegos
+    var gamesBarGenerator = d3.scaleBand()
+        .range([0, 400])
+        .padding(0.1);
+
+        console.log(gamesBarGenerator);
+
+    // Seleccionar el contenedor del gráfico de juegos
+    var gamesChart = d3.select("#games-chart");
+
+    // Configurar el dominio para el generador de barra de juegos
+    gamesBarGenerator.domain(gamesBarData.map(d => d.region));
+
+    // Añadir las barras al gráfico de juegos
+    gamesChart.selectAll(".games-bar")
+        .data(gamesBarData)
+        .enter().append("rect")
+        .attr("class", "games-bar")
+        .attr("x", d => gamesBarGenerator(d.region))
+        .attr("y", d => 200 - (d.count * 10))
+        .attr("width", gamesBarGenerator.bandwidth())
+        .attr("height", d => d.count * 10)
+        .attr("fill", d => d.region === "Kanto" ? "blue" : "green");
+
+        console.log(gamesChart);
+
+    // Añadir un título al gráfico de barras de juegos
+    gamesChart.append("text")
+        .attr("x", 200)
+        .attr("y", 30)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "20px")
+        .text("Comparación de juegos entre Kanto y Johto");
+
+    // Obtener la cantidad de Pokémon que habitan en cada región
+    var kantoPokemonCount = kantoData.pokemons_que_habitan.length;
+    var johtoPokemonCount = johtoData.pokemons_que_habitan.length;
+
+    // Crear los datos para el gráfico de pastel de Pokémon
+    var pokemonPieData = [
+        { region: "Kanto", count: kantoPokemonCount },
+        { region: "Johto", count: johtoPokemonCount }
+    ];
+
+    // Crear el generador de arcos para el gráfico de pastel de Pokémon
+    var pokemonArcGenerator = d3.arc()
         .innerRadius(0)
         .outerRadius(150);
 
+    // Seleccionar el contenedor del gráfico de pastel de Pokémon
+    var pokemonChart = d3.select("#pokemon-chart");
+
     // Crear el generador de colores
     var color = d3.scaleOrdinal()
-        .domain(pieData.map(d => d.version))
-        .range(d3.schemeCategory10);
+        .domain(pokemonPieData.map(d => d.region))
+        .range(["blue", "green"]); // Colores correspondientes a Kanto y Johto
 
     // Crear el generador de pie
-    var pieGenerator = d3.pie()
+    var pokemonPieGenerator = d3.pie()
         .value(d => d.count);
 
-    // Seleccionar el contenedor del gráfico
-    var chart = d3.select("#chart");
-
-    // Añadir los arcos al gráfico
-    chart.selectAll(".arc")
-        .data(pieGenerator(pieData))
+    // Añadir los arcos al gráfico de pastel de Pokémon
+    pokemonChart.selectAll(".pokemon-arc")
+        .data(pokemonPieGenerator(pokemonPieData))
         .enter().append("path")
-        .attr("class", "arc")
-        .attr("d", arcGenerator)
-        .attr("fill", d => color(d.data.version))
+        .attr("class", "pokemon-arc")
+        .attr("d", pokemonArcGenerator)
+        .attr("fill", d => color(d.data.region))
         .attr("transform", "translate(200,200)");
-}).catch(function(error) {
-    // Manejar cualquier error de carga
-    console.error('Error al cargar el archivo JSON:', error);
+        
+   // Añadir un título al gráfico de pastel de Pokémon
+   pokemonChart.append("text")
+   .attr("x", 200)
+   .attr("y", 30)
+   .attr("text-anchor", "middle")
+   .attr("font-size", "20px")
+   .text("Comparación de Pokémon entre Kanto y Johto");
+  
+});
 });
