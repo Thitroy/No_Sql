@@ -19,7 +19,7 @@ for file in all_files:
     try:
         # Muestreo aleatorio para reducir el tamaño de animelist.csv si es necesario
         if file.endswith('animelist.csv'):
-            df = pd.read_csv(file, nrows=1)  # Leer solo las primeras 90 filas
+            df = pd.read_csv(file, nrows=90)  # Leer solo las primeras 90 filas
             dfs.append(df)
         else:
             df = pd.read_csv(file)
