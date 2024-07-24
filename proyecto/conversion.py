@@ -9,6 +9,10 @@ def clean_data(df):
     
     # Eliminar duplicados
     df.drop_duplicates(inplace=True)
+
+    # Eliminar filas con valores "Unknown"
+    df.replace('Unknown', pd.NA, inplace=True)
+    df.dropna(inplace=True)
     
     # Convertir los datos a los tipos apropiados
     if 'user_id' in df.columns:
@@ -17,6 +21,8 @@ def clean_data(df):
         df['anime_id'] = df['anime_id'].astype(int)
     if 'rating' in df.columns:
         df['rating'] = df['rating'].astype(float)
+    if 'Episodes' in df.columns:
+        df['Episodes'] = df['Episodes'].astype(int)   
     
     # Filtrar filas con valores de 'rating' fuera del rango 0-10
     if 'rating' in df.columns:
